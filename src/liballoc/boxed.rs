@@ -57,13 +57,14 @@
 
 use heap::{Heap, Layout, Alloc};
 use raw_vec::RawVec;
+use vec::Vec;
 
 use core::any::Any;
 use core::borrow;
 use core::cmp::Ordering;
 use core::fmt;
 use core::hash::{self, Hash, Hasher};
-use core::iter::FusedIterator;
+use core::iter::{FromIterator, FusedIterator};
 use core::marker::{self, Unsize};
 use core::mem;
 use core::ops::{CoerceUnsized, Deref, DerefMut, Generator, GeneratorState};
@@ -883,5 +884,14 @@ impl<T> Generator for Box<T>
     type Return = T::Return;
     fn resume(&mut self) -> GeneratorState<Self::Yield, Self::Return> {
         (**self).resume()
+    }
+}
+
+#[unstable(feature = "from_iter_boxed_slice", issue = "0")]
+impl<T> FromIterator<T> for Box<[T]> {
+    fn from_iter<I>(iter: I) -> Self
+        where I: IntoIterator<Item = T>
+    {
+        iter.into_iter().collect::<Vec<_>>().into_boxed_slice()
     }
 }

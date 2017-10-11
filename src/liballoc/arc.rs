@@ -22,6 +22,7 @@ use core::borrow;
 use core::fmt;
 use core::cmp::Ordering;
 use core::intrinsics::abort;
+use core::iter::FromIterator;
 use core::mem::{self, align_of_val, size_of_val, uninitialized};
 use core::ops::Deref;
 use core::ops::CoerceUnsized;
@@ -1857,5 +1858,14 @@ impl<T: ?Sized> borrow::Borrow<T> for Arc<T> {
 impl<T: ?Sized> AsRef<T> for Arc<T> {
     fn as_ref(&self) -> &T {
         &**self
+    }
+}
+
+#[unstable(feature = "from_iter_boxed_slice", issue = "0")]
+impl<T> FromIterator<T> for Arc<[T]> {
+    fn from_iter<I>(iter: I) -> Self
+        where I: IntoIterator<Item = T>
+    {
+        iter.into_iter().collect::<Vec<_>>().into()
     }
 }

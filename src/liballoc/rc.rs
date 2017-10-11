@@ -251,6 +251,7 @@ use core::cmp::Ordering;
 use core::fmt;
 use core::hash::{Hash, Hasher};
 use core::intrinsics::abort;
+use core::iter::FromIterator;
 use core::marker;
 use core::marker::Unsize;
 use core::mem::{self, align_of_val, forget, size_of_val, uninitialized};
@@ -614,6 +615,7 @@ impl<T: Clone> Rc<T> {
         }
     }
 }
+
 
 impl Rc<Any> {
     #[inline]
@@ -1798,5 +1800,14 @@ impl<T: ?Sized> borrow::Borrow<T> for Rc<T> {
 impl<T: ?Sized> AsRef<T> for Rc<T> {
     fn as_ref(&self) -> &T {
         &**self
+    }
+}
+
+#[unstable(feature = "from_iter_containers", issue = "0")]
+impl<T> FromIterator<T> for Rc<[T]> {
+    fn from_iter<I>(iter: I) -> Self
+        where I: IntoIterator<Item = T>
+    {
+        iter.into_iter().collect::<Vec<_>>().into()
     }
 }

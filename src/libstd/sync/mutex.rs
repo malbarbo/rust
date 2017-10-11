@@ -10,6 +10,7 @@
 
 use cell::UnsafeCell;
 use fmt;
+use iter::FromIterator;
 use mem;
 use ops::{Deref, DerefMut};
 use ptr;
@@ -472,6 +473,24 @@ impl<'a, T: ?Sized + fmt::Debug> fmt::Debug for MutexGuard<'a, T> {
 impl<'a, T: ?Sized + fmt::Display> fmt::Display for MutexGuard<'a, T> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         (**self).fmt(f)
+    }
+}
+
+#[unstable(feature = "from_iter_containers", issue = "0")]
+impl<T> From<T> for Mutex<T> {
+    fn from(value: T) -> Self {
+        Mutex::new(value)
+    }
+}
+
+#[unstable(feature = "from_iter_containers", issue = "0")]
+impl<T, C: ?Sized> FromIterator<T> for Mutex<C>
+    where C: FromIterator<T>,
+{
+    fn from_iter<I>(iter: I) -> Self
+        where I: IntoIterator<Item = T>
+    {
+        iter.into_iter().collect::<C>().into()
     }
 }
 

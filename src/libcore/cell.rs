@@ -181,6 +181,7 @@
 
 use cmp::Ordering;
 use fmt::{self, Debug, Display};
+use iter::FromIterator;
 use marker::Unsize;
 use mem;
 use ops::{Deref, DerefMut, CoerceUnsized};
@@ -477,6 +478,18 @@ impl<T: Default> Cell<T> {
 
 #[unstable(feature = "coerce_unsized", issue = "27732")]
 impl<T: CoerceUnsized<U>, U> CoerceUnsized<Cell<U>> for Cell<T> {}
+
+#[unstable(feature = "from_iter_containers", issue = "0")]
+impl<T, C: ?Sized> FromIterator<T> for Cell<C>
+    where C: FromIterator<T>,
+{
+    fn from_iter<I>(iter: I) -> Self
+        where I: IntoIterator<Item = T>
+    {
+        iter.into_iter().collect::<C>().into()
+    }
+}
+
 
 /// A mutable memory location with dynamically checked borrow rules
 ///
@@ -939,6 +952,18 @@ impl<T> From<T> for RefCell<T> {
 #[unstable(feature = "coerce_unsized", issue = "27732")]
 impl<T: CoerceUnsized<U>, U> CoerceUnsized<RefCell<U>> for RefCell<T> {}
 
+#[unstable(feature = "from_iter_containers", issue = "0")]
+impl<T, C: ?Sized> FromIterator<T> for RefCell<C>
+    where C: FromIterator<T>,
+{
+    fn from_iter<I>(iter: I) -> Self
+        where I: IntoIterator<Item = T>
+    {
+        iter.into_iter().collect::<C>().into()
+    }
+}
+
+
 struct BorrowRef<'b> {
     borrow: &'b Cell<BorrowFlag>,
 }
@@ -1285,6 +1310,18 @@ impl<T> From<T> for UnsafeCell<T> {
 
 #[unstable(feature = "coerce_unsized", issue = "27732")]
 impl<T: CoerceUnsized<U>, U> CoerceUnsized<UnsafeCell<U>> for UnsafeCell<T> {}
+
+#[unstable(feature = "from_iter_containers", issue = "0")]
+impl<T, C: ?Sized> FromIterator<T> for UnsafeCell<C>
+    where C: FromIterator<T>,
+{
+    fn from_iter<I>(iter: I) -> Self
+        where I: IntoIterator<Item = T>
+    {
+        iter.into_iter().collect::<C>().into()
+    }
+}
+
 
 #[allow(unused)]
 fn assert_coerce_unsized(a: UnsafeCell<&i32>, b: Cell<&i32>, c: RefCell<&i32>) {
