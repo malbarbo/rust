@@ -661,13 +661,7 @@ impl<T: ?Sized> Rc<T> {
         // Create a fake RcBox to find allocation size and alignment
         let fake_ptr = ptr as *mut RcBox<T>;
 
-        let layout = Layout::for_value(&*fake_ptr);
-
-        let mem = Heap.alloc(layout)
-            .unwrap_or_else(|e| Heap.oom(e));
-
-        // Initialize the real RcBox
-        let inner = set_data_ptr(ptr as *mut T, mem) as *mut RcBox<T>;
+        let inner = Box::into_raw(Box::uninitialized_for_value(&*fake_ptr));
 
         ptr::write(&mut (*inner).strong, Cell::new(1));
         ptr::write(&mut (*inner).weak, Cell::new(1));

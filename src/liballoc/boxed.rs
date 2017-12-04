@@ -241,6 +241,24 @@ impl<T> Box<T> {
     pub fn new(x: T) -> Box<T> {
         box x
     }
+
+    #[unstable(feature = "box_uninitialized", issue = "0")]
+    pub unsafe fn uninitialized() -> Box<T> {
+        Self::uninitialized_for_value(&mem::uninitialized())
+    }
+}
+
+impl<T: ?Sized> Box<T> {
+    #[unstable(feature = "box_uninitialized", issue = "0")]
+    pub unsafe fn uninitialized_for_value(value: &T) -> Box<T> {
+        let layout = Layout::for_value(value);
+        let ptr = Heap.alloc(layout).unwrap_or_else(|e| Heap.oom(e));
+        // Initialize b with value so b has the right DST extra field if T is ?Sized
+        let mut b: Box<T> = mem::transmute(value);
+        // Change the pointer to the newly allocated memory
+        ptr::write(&mut b as *mut _ as *mut *mut u8, ptr);
+        b
+    }
 }
 
 impl<T: ?Sized> Box<T> {

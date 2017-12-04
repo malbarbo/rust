@@ -550,13 +550,7 @@ impl<T: ?Sized> Arc<T> {
         // Create a fake ArcInner to find allocation size and alignment
         let fake_ptr = ptr as *mut ArcInner<T>;
 
-        let layout = Layout::for_value(&*fake_ptr);
-
-        let mem = Heap.alloc(layout)
-            .unwrap_or_else(|e| Heap.oom(e));
-
-        // Initialize the real ArcInner
-        let inner = set_data_ptr(ptr as *mut T, mem) as *mut ArcInner<T>;
+        let inner = Box::into_raw(Box::uninitialized_for_value(&*fake_ptr));
 
         ptr::write(&mut (*inner).strong, atomic::AtomicUsize::new(1));
         ptr::write(&mut (*inner).weak, atomic::AtomicUsize::new(1));
