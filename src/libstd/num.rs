@@ -8,50 +8,18 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-//! Additional functionality for numerics.
-//!
-//! This module provides some extra types that are useful when doing numerical
-//! work. See the individual documentation for each piece for more information.
-
-#![stable(feature = "rust1", since = "1.0.0")]
-#![allow(missing_docs)]
-
-#[stable(feature = "rust1", since = "1.0.0")]
-pub use core::num::{FpCategory, ParseIntError, ParseFloatError, TryFromIntError};
-#[stable(feature = "rust1", since = "1.0.0")]
-pub use core::num::Wrapping;
-
-#[cfg(test)] use fmt;
-#[cfg(test)] use ops::{Add, Sub, Mul, Div, Rem};
-
-/// Helper function for testing numeric operations
-#[cfg(test)]
-pub fn test_num<T>(ten: T, two: T) where
-    T: PartialEq
-     + Add<Output=T> + Sub<Output=T>
-     + Mul<Output=T> + Div<Output=T>
-     + Rem<Output=T> + fmt::Debug
-     + Copy
-{
-    assert_eq!(ten.add(two),  ten + two);
-    assert_eq!(ten.sub(two),  ten - two);
-    assert_eq!(ten.mul(two),  ten * two);
-    assert_eq!(ten.div(two),  ten / two);
-    assert_eq!(ten.rem(two),  ten % two);
-}
-
 #[cfg(test)]
 mod tests {
-    use u8;
-    use u16;
-    use u32;
-    use u64;
-    use usize;
-    use ops::Mul;
+    use std::u8;
+    use std::u16;
+    use std::u32;
+    use std::u64;
+    use std::usize;
+    use std::ops::Mul;
 
     #[test]
     fn test_saturating_add_uint() {
-        use usize::MAX;
+        use std::usize::MAX;
         assert_eq!(3_usize.saturating_add(5_usize), 8_usize);
         assert_eq!(3_usize.saturating_add(MAX-1), MAX);
         assert_eq!(MAX.saturating_add(MAX), MAX);
@@ -60,7 +28,7 @@ mod tests {
 
     #[test]
     fn test_saturating_sub_uint() {
-        use usize::MAX;
+        use std::usize::MAX;
         assert_eq!(5_usize.saturating_sub(3_usize), 2_usize);
         assert_eq!(3_usize.saturating_sub(5_usize), 0_usize);
         assert_eq!(0_usize.saturating_sub(1_usize), 0_usize);
@@ -69,7 +37,7 @@ mod tests {
 
     #[test]
     fn test_saturating_add_int() {
-        use isize::{MIN,MAX};
+        use std::isize::{MIN,MAX};
         assert_eq!(3i32.saturating_add(5), 8);
         assert_eq!(3isize.saturating_add(MAX-1), MAX);
         assert_eq!(MAX.saturating_add(MAX), MAX);
@@ -81,7 +49,7 @@ mod tests {
 
     #[test]
     fn test_saturating_sub_int() {
-        use isize::{MIN,MAX};
+        use std::isize::{MIN,MAX};
         assert_eq!(3i32.saturating_sub(5), -2);
         assert_eq!(MIN.saturating_sub(1), MIN);
         assert_eq!((-2isize).saturating_sub(MAX), MIN);
@@ -240,8 +208,8 @@ mod tests {
         assert_eq!(u64_val.to_string(), "0");
     }
 
-    fn from_str<T: ::str::FromStr>(t: &str) -> Option<T> {
-        ::str::FromStr::from_str(t).ok()
+    fn from_str<T: ::std::str::FromStr>(t: &str) -> Option<T> {
+        ::std::str::FromStr::from_str(t).ok()
     }
 
     #[test]
@@ -283,8 +251,7 @@ mod tests {
 
 #[cfg(test)]
 mod bench {
-    extern crate test;
-    use self::test::Bencher;
+    use test::Bencher;
 
     #[bench]
     fn bench_pow_function(b: &mut Bencher) {
