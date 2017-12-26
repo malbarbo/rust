@@ -14,3 +14,4 @@
 
 mod ascii;
 mod env;
+mod error;
