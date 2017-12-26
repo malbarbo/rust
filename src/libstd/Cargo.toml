@@ -12,6 +12,10 @@ name = "std"
 path = "lib.rs"
 crate-type = ["dylib", "rlib"]
 
+[[test]]
+name = "stdtests"
+path = "tests/lib.rs"
+
 [dependencies]
 alloc = { path = "../liballoc" }
 alloc_jemalloc = { path = "../liballoc_jemalloc", optional = true }
