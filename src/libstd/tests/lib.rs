@@ -12,6 +12,33 @@
 
 #![feature(ascii_ctype)]
 
+use std::fmt;
+use std::ops::{Add, Sub, Mul, Div, Rem};
+
+/// Helper function for testing numeric operations
+pub fn test_num<T>(ten: T, two: T) where
+    T: PartialEq
+     + Add<Output=T> + Sub<Output=T>
+     + Mul<Output=T> + Div<Output=T>
+     + Rem<Output=T> + fmt::Debug
+     + Copy
+{
+    assert_eq!(ten.add(two),  ten + two);
+    assert_eq!(ten.sub(two),  ten - two);
+    assert_eq!(ten.mul(two),  ten * two);
+    assert_eq!(ten.div(two),  ten / two);
+    assert_eq!(ten.rem(two),  ten % two);
+}
+
+macro_rules! assert_approx_eq {
+    ($a:expr, $b:expr) => ({
+        let (a, b) = (&$a, &$b);
+        assert!((*a - *b).abs() < 1.0e-6,
+                "{} is not approximately equal to {}", *a, *b);
+    })
+}
+
 mod ascii;
 mod env;
 mod error;
+mod f32;
