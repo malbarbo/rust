@@ -12,10 +12,13 @@
 
 #![feature(ascii_ctype)]
 #![feature(fs_read_write)]
+#![feature(io)]
 #![feature(rustc_private)]
+#![feature(test)]
 #![feature(toowned_clone_into)]
 
 extern crate rand;
+extern crate test;
 
 use std::fmt;
 use std::ops::{Add, Sub, Mul, Div, Rem};
@@ -49,3 +52,4 @@ mod f32;
 mod f64;
 mod ffi;
 mod fs;
+mod io;

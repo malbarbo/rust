@@ -707,30 +707,3 @@ pub fn _eprint(args: fmt::Arguments) {
     use panicking::LOCAL_STDERR;
     print_to(args, &LOCAL_STDERR, stderr, "stderr");
 }
-
-#[cfg(test)]
-mod tests {
-    use thread;
-    use super::*;
-
-    #[test]
-    #[cfg_attr(target_os = "emscripten", ignore)]
-    fn panic_doesnt_poison() {
-        thread::spawn(|| {
-            let _a = stdin();
-            let _a = _a.lock();
-            let _a = stdout();
-            let _a = _a.lock();
-            let _a = stderr();
-            let _a = _a.lock();
-            panic!();
-        }).join().unwrap_err();
-
-        let _a = stdin();
-        let _a = _a.lock();
-        let _a = stdout();
-        let _a = _a.lock();
-        let _a = stderr();
-        let _a = _a.lock();
-    }
-}
