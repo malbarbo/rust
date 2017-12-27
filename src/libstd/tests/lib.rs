@@ -11,7 +11,11 @@
 #![deny(warnings)]
 
 #![feature(ascii_ctype)]
+#![feature(fs_read_write)]
+#![feature(rustc_private)]
 #![feature(toowned_clone_into)]
+
+extern crate rand;
 
 use std::fmt;
 use std::ops::{Add, Sub, Mul, Div, Rem};
@@ -44,3 +48,4 @@ mod error;
 mod f32;
 mod f64;
 mod ffi;
+mod fs;
