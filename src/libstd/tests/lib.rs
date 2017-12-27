@@ -11,12 +11,15 @@
 #![deny(warnings)]
 
 #![feature(ascii_ctype)]
+#![feature(box_syntax)]
 #![feature(fs_read_write)]
 #![feature(i128_type)]
 #![feature(io)]
 #![feature(ip)]
 #![feature(ip_constructors)]
 #![feature(libc)]
+#![feature(mpsc_select)]
+#![feature(once_poison)]
 #![feature(rustc_private)]
 #![feature(test)]
 #![feature(toowned_clone_into)]
@@ -63,3 +66,4 @@ mod num;
 mod os;
 mod path;
 mod process;
+mod sync;
