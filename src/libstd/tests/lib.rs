@@ -15,7 +15,14 @@
 use std::fmt;
 use std::ops::{Add, Sub, Mul, Div, Rem};
 
-/// Helper function for testing numeric operations
+macro_rules! assert_approx_eq {
+    ($a:expr, $b:expr) => ({
+        let (a, b) = (&$a, &$b);
+        assert!((*a - *b).abs() < 1.0e-6,
+                "{} is not approximately equal to {}", *a, *b);
+    })
+}
+
 pub fn test_num<T>(ten: T, two: T) where
     T: PartialEq
      + Add<Output=T> + Sub<Output=T>
@@ -30,15 +37,8 @@ pub fn test_num<T>(ten: T, two: T) where
     assert_eq!(ten.rem(two),  ten % two);
 }
 
-macro_rules! assert_approx_eq {
-    ($a:expr, $b:expr) => ({
-        let (a, b) = (&$a, &$b);
-        assert!((*a - *b).abs() < 1.0e-6,
-                "{} is not approximately equal to {}", *a, *b);
-    })
-}
-
 mod ascii;
 mod env;
 mod error;
 mod f32;
+mod f64;
