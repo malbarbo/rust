@@ -12,7 +12,10 @@
 
 #![feature(ascii_ctype)]
 #![feature(fs_read_write)]
+#![feature(i128_type)]
 #![feature(io)]
+#![feature(ip)]
+#![feature(ip_constructors)]
 #![feature(rustc_private)]
 #![feature(test)]
 #![feature(toowned_clone_into)]
@@ -53,3 +56,4 @@ mod f64;
 mod ffi;
 mod fs;
 mod io;
+mod net;
