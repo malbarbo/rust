@@ -16,10 +16,12 @@
 #![feature(io)]
 #![feature(ip)]
 #![feature(ip_constructors)]
+#![feature(libc)]
 #![feature(rustc_private)]
 #![feature(test)]
 #![feature(toowned_clone_into)]
 
+extern crate libc;
 extern crate rand;
 extern crate test;
 
@@ -58,3 +60,4 @@ mod fs;
 mod io;
 mod net;
 mod num;
+mod os;
