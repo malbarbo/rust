@@ -22,6 +22,7 @@
 #![feature(once_poison)]
 #![feature(rustc_private)]
 #![feature(test)]
+#![feature(thread_local_state)]
 #![feature(toowned_clone_into)]
 
 extern crate libc;
@@ -67,3 +68,4 @@ mod os;
 mod path;
 mod process;
 mod sync;
+mod thread;
