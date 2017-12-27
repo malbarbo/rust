@@ -11,6 +11,7 @@
 #![deny(warnings)]
 
 #![feature(ascii_ctype)]
+#![feature(toowned_clone_into)]
 
 use std::fmt;
 use std::ops::{Add, Sub, Mul, Div, Rem};
@@ -42,3 +43,4 @@ mod env;
 mod error;
 mod f32;
 mod f64;
+mod ffi;
