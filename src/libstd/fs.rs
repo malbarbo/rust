@@ -1985,13 +1985,8 @@ impl AsInnerMut<fs_imp::DirBuilder> for DirBuilder {
 mod tests {
     use io::prelude::*;
 
-    use fs::{self, File, OpenOptions};
-    use io::{ErrorKind, SeekFrom};
-    use path::Path;
-    use rand::{StdRng, Rng};
-    use str;
+    use fs::{self, File};
     use sys_common::io::test::{TempDir, tmpdir};
-    use thread;
 
     #[cfg(windows)]
     use os::windows::fs::{symlink_dir, symlink_file};
@@ -2010,6 +2005,24 @@ mod tests {
             Err(e) => panic!("{} failed with: {}", stringify!($e), e),
         }
     ) }
+
+    // Several test fail on windows if the user does not have permission to
+    // create symlinks (the `SeCreateSymbolicLinkPrivilege`). Instead of
+    // disabling these test on Windows, use this function to test whether we
+    // have permission, and return otherwise. This way, we still don't run these
+    // tests most of the time, but at least we do if the user has the right
+    // permissions.
+    fn got_symlink_permission(tmpdir: &TempDir) -> bool {
+        if cfg!(unix) { return true }
+        let link = tmpdir.join("some_hopefully_unique_link_name");
+
+        match symlink_file(r"nonexisting_target", link) {
+            Ok(_) => true,
+            // ERROR_PRIVILEGE_NOT_HELD = 1314
+            Err(ref err) if err.raw_os_error() == Some(1314) => false,
+            Err(_) => true,
+        }
+    }
 
     #[test]
     fn recursive_rmdir() {

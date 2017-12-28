@@ -788,9 +788,8 @@ impl fmt::Debug for UdpSocket {
 
 #[cfg(all(test, not(target_os = "emscripten")))]
 mod tests {
-    use io::ErrorKind;
     use net::*;
-    use net::test::{next_test_ip4, next_test_ip6};
+    use net::test::next_test_ip4;
     use sys_common::AsInner;
 
     macro_rules! t {
