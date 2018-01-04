@@ -161,6 +161,7 @@ supported_targets! {
     ("i686-unknown-linux-musl", i686_unknown_linux_musl),
     ("mips-unknown-linux-musl", mips_unknown_linux_musl),
     ("mipsel-unknown-linux-musl", mipsel_unknown_linux_musl),
+    ("powerpc-unknown-linux-musl", powerpc_unknown_linux_musl),
     ("mips-unknown-linux-uclibc", mips_unknown_linux_uclibc),
     ("mipsel-unknown-linux-uclibc", mipsel_unknown_linux_uclibc),
 
