@@ -183,7 +183,9 @@ pub fn check(build: &mut Build) {
                         panic!("couldn't find libc.a in musl dir: {}",
                                root.join("lib").display());
                     }
-                    if fs::metadata(root.join("lib/libunwind.a")).is_err() {
+                    // x32 is not support by libunwind
+                    if !target.ends_with("muslx32") &&
+                        fs::metadata(root.join("lib/libunwind.a")).is_err() {
                         panic!("couldn't find libunwind.a in musl dir: {}",
                                root.join("lib").display());
                     }

@@ -108,6 +108,8 @@ v("musl-root", "target.x86_64-unknown-linux-musl.musl-root",
   "MUSL root installation directory (deprecated)")
 v("musl-root-x86_64", "target.x86_64-unknown-linux-musl.musl-root",
   "x86_64-unknown-linux-musl install directory")
+v("musl-root-x32", "target.x86_64-unknown-linux-muslx32.musl-root",
+  "x86_64-unknown-linux-muslx32 install directory")
 v("musl-root-i686", "target.i686-unknown-linux-musl.musl-root",
   "i686-unknown-linux-musl install directory")
 v("musl-root-arm", "target.arm-unknown-linux-musleabi.musl-root",

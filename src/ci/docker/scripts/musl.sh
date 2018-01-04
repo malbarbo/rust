@@ -39,13 +39,18 @@ fi
 
 cd $MUSL
 ./configure --disable-shared --prefix=/musl-$TAG $@
-if [ "$TAG" = "i686" ]; then
+if [ "$TAG" = "i686" -o "$TAG" = "x32" ]; then
   hide_output make -j$(nproc) AR=ar RANLIB=ranlib
 else
   hide_output make -j$(nproc)
 fi
 hide_output make install
 hide_output make clean
+
+# libunwind does not support x32
+if [ "$TAG" = "x32" ]; then
+  exit 0
+fi
 
 cd ..
 
