@@ -12,9 +12,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   sudo \
   xz-utils \
   zlib1g-dev \
+  g++-aarch64-linux-gnu \
   g++-arm-linux-gnueabi \
   g++-arm-linux-gnueabihf \
-  g++-aarch64-linux-gnu \
+  g++-powerpc64le-linux-gnu \
   gcc-sparc64-linux-gnu \
   libc6-dev-sparc64-cross \
   bzip2 \
@@ -64,6 +65,10 @@ RUN env \
     CC=mipsel-openwrt-linux-gcc \
     CXX=mipsel-openwrt-linux-g++ \
     bash musl.sh mipsel && \
+    env \
+    CC=powerpc64le-linux-gnu-gcc CFLAGS=-mlong-double-64 \
+    CXX=powerpc64le-linux-gnu-g++ CXXFLAGS=-mlong-double-64 \
+    bash musl.sh powerpc64le && \
     rm -rf /build/*
 
 ENV TARGETS=asmjs-unknown-emscripten
@@ -76,6 +81,7 @@ ENV TARGETS=$TARGETS,arm-unknown-linux-musleabihf
 ENV TARGETS=$TARGETS,armv5te-unknown-linux-gnueabi
 ENV TARGETS=$TARGETS,armv7-unknown-linux-musleabihf
 ENV TARGETS=$TARGETS,aarch64-unknown-linux-musl
+ENV TARGETS=$TARGETS,powerpc64le-unknown-linux-musl
 ENV TARGETS=$TARGETS,sparc64-unknown-linux-gnu
 ENV TARGETS=$TARGETS,x86_64-unknown-redox
 
@@ -90,12 +96,13 @@ ENV CC_mipsel_unknown_linux_musl=mipsel-openwrt-linux-gcc \
 
 ENV RUST_CONFIGURE_ARGS \
       --target=$TARGETS \
-      --musl-root-arm=/musl-arm \
-      --musl-root-armhf=/musl-armhf \
-      --musl-root-armv7=/musl-armv7 \
       --musl-root-aarch64=/musl-aarch64 \
+      --musl-root-armhf=/musl-armhf \
+      --musl-root-arm=/musl-arm \
+      --musl-root-armv7=/musl-armv7 \
       --musl-root-mips=/musl-mips \
       --musl-root-mipsel=/musl-mipsel \
+      --musl-root-powerpc64le=/musl-powerpc64le \
       --enable-emscripten
 
 ENV SCRIPT python2.7 ../x.py dist --target $TARGETS

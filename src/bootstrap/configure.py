@@ -125,6 +125,8 @@ v("musl-root-mips", "target.mips-unknown-linux-musl.musl-root",
   "mips-unknown-linux-musl install directory")
 v("musl-root-mipsel", "target.mipsel-unknown-linux-musl.musl-root",
   "mipsel-unknown-linux-musl install directory")
+v("musl-root-powerpc64le", "target.powerpc64le-unknown-linux-musl.musl-root",
+  "powerpc64le-unknown-linux-musl install directory")
 v("qemu-armhf-rootfs", "target.arm-unknown-linux-gnueabihf.qemu-rootfs",
   "rootfs in qemu testing, you probably don't want to use this")
 v("qemu-aarch64-rootfs", "target.aarch64-unknown-linux-gnu.qemu-rootfs",
